@@ -1,2 +1,3 @@
-# sw_systems_hw1
-Software Systems Course Assignment 1
+# Software Systems Course Assignment 1
+
+By Roy Simanovich and Dana Sharper
