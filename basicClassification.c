@@ -18,10 +18,10 @@ int isStrong(int x) {
     int tmp_res = x;
     int fac_sum = 0;
 
-    while (temp_res > 0)
+    while (tmp_res > 0)
     {
-        fac_sum = factorial((temp_res % 10));
-        temp_res /= 10;
+        fac_sum = factorial((tmp_res % 10));
+        tmp_res /= 10;
     }
 
     return ((fac_sum == x) ? TRUE:FALSE);
