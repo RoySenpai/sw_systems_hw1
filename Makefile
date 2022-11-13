@@ -6,22 +6,22 @@ CFLAGS = -Wall
 
 all: loops recursives recursived loopd mains maindloop maindrec
 
-mains: main.c NumClass.h
-	gcc $(CFLAGS) -c $< –L. –lclassrec -o $@
+mains: main.c NumClass.h libclassrec.a
+	gcc $(CFLAGS) -c $< -o $@
 
 maindloop: main.c NumClass.h
-	gcc $(CFLAGS) -c $< –L. -lclassloops -o $@
+	gcc $(CFLAGS) -c $< -lclassloops -o $@
 
 maindrec: main.c NumClass.h
-	gcc $(CFLAGS) -c $< –L. -lclassrec -o $@
+	gcc $(CFLAGS) -c $< -lclassrec -o $@
 
 loops: 
 	gcc $(CFLAGS) -c advancedClassificationLoop.c
-	ar –rc libclassloops.a advancedClassificationLoop.o
+	ar rcs libclassloops.a advancedClassificationLoop.o
 
 recursives::
 	gcc $(CFLAGS) -c advancedClassificationRecursion.c
-	ar –rc libclassrec.a advancedClassificationRecursion.o
+	ar rcs libclassrec.a advancedClassificationRecursion.o
 
 recursived::
 	gcc -c $(CFLAGS) -Werror -fpic advancedClassificationRecursion.c
