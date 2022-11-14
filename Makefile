@@ -1,41 +1,64 @@
 # Flags setup
 CFLAGS = -Wall
+LFLAGS = -shared
 
 # Phony tag for non-targeted commands
 .PHONY: all clean loops recursives recursived loopd
 
-all: loops recursives recursived loopd mains maindloop maindrec
+# Build everything 
+all: mains maindloop maindrec loops recursives recursived loopd
 
-mains: main.c NumClass.h libclassrec.a
-	gcc $(CFLAGS) -c $< -o $@
+# Marcos to build libraries
+loops: libclassloops.a
 
-maindloop: main.c NumClass.h
-	gcc $(CFLAGS) -c $< -lclassloops -o $@
+recursives: libclassrec.a
 
-maindrec: main.c NumClass.h
-	gcc $(CFLAGS) -c $< -lclassrec -o $@
+recursived: libclassrec.so
 
-loops: 
-	gcc $(CFLAGS) -c advancedClassificationLoop.c
-	ar rcs libclassloops.a advancedClassificationLoop.o
+loopd: libclassloops.so
 
-recursives::
-	gcc $(CFLAGS) -c advancedClassificationRecursion.c
-	ar rcs libclassrec.a advancedClassificationRecursion.o
+# Build main programs
 
-recursived::
-	gcc -c $(CFLAGS) -Werror -fpic advancedClassificationRecursion.c
-	gcc -shared $(CFLAGS) advancedClassificationRecursion.o -o libclassrec.so
+# The main program with static libary of recursive implametation
+mains: main.o libclassrec.a
+	gcc $(CFLAGS) $< -L. -lclassrec -lm -o $@
+
+# The main program with dynamic libary of loops implametation
+maindloop: main.o libclassloops.so
+	gcc $(CFLAGS) $^ -L. -lclassloops -lm -o $@
+
+# The main program with dynamic libary of recursive implametation
+maindrec: main.o libclassrec.so
+	gcc $(CFLAGS) $^ -L. -lclassrec -lm -o $@
+
+# Compile the main program to an object file
+main.o: main.c NumClass.h
+	gcc $(CFLAGS) -c $^
+
+# Building all necessary libraries
+libclassrec.so:: advancedClassificationRecursion.o basicClassification.o
+	gcc $(LFLAGS) $(CFLAGS) $^ -o $@
 	export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
 
-loopd::
-	gcc -c $(CFLAGS) -Werror -fpic advancedClassificationLoop.c
-	gcc -shared $(CFLAGS) advancedClassificationLoop.o -o libclassloops.so
+libclassloops.so:: advancedClassificationLoop.o basicClassification.o
+	gcc $(LFLAGS) $(CFLAGcS) $^ -o $@
 	export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+
+libclassloops.a: advancedClassificationLoop.o basicClassification.o
+	ar rcs $@ $^
+
+libclassrec.a: advancedClassificationRecursion.o basicClassification.o
+	ar rcs $@ $^
+
+advancedClassificationLoop.o: advancedClassificationLoop.c NumClass.h
+	gcc $(CFLAGS) -c $^ -fPIC
+
+advancedClassificationRecursion.o: advancedClassificationRecursion.c NumClass.h
+	gcc $(CFLAGS) -c $^ -fPIC
 
 basicClassification.o: basicClassification.c NumClass.h
-	gcc $(CFLAGS) -c basicClassification.c
+	gcc $(CFLAGS) -c $^
 
 # Clean command to cleanup all the compiled files (*.o, *.a, *.so, mains, maindloop and maindrec)
 clean:
-	rm -rf mains maindloop maindrec *.o *.a *.so
+	rm -rf mains maindloop maindrec *.o *.a *.so *.gch
