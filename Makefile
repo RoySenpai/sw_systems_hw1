@@ -41,7 +41,7 @@ libclassrec.so:: advancedClassificationRecursion.o basicClassification.o
 	export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
 
 libclassloops.so:: advancedClassificationLoop.o basicClassification.o
-	gcc $(LFLAGS) $(CFLAGcS) $^ -o $@
+	gcc $(LFLAGS) $(CFLAGS) $^ -o $@
 	export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
 
 libclassloops.a: advancedClassificationLoop.o basicClassification.o
