@@ -6,7 +6,7 @@ long factorial(int);
 int isPrime(int x) {
     int pos;
 
-    for (pos = 2; pos < sqrt(x); ++pos)
+    for (pos = 2; pos <= sqrt(x); ++pos)
     {
         if (x % pos == 0)
             return FALSE;
@@ -21,7 +21,7 @@ int isStrong(int x) {
 
     while (tmp_res > 0)
     {
-        fac_sum = factorial((tmp_res % 10));
+        fac_sum += factorial((tmp_res % 10));
         tmp_res /= 10;
     }
 
@@ -32,5 +32,5 @@ long factorial(int x) {
     if (x == 0)
         return 1;
 
-    return x + factorial(x-1);
+    return x*factorial(x-1);
 }
