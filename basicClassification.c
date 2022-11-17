@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <math.h>
 #include "NumClass.h"
 
@@ -8,15 +9,15 @@ int isPrime(int x) {
 
     // 0 & 1 aren't primes!
     if (x == 0 || x == 1)
-        return FALSE;
+        return false;
 
     for (pos = 2; pos <= sqrt(x); ++pos)
     {
         if (x % pos == 0)
-            return FALSE;
+            return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 int isStrong(int x) {
@@ -24,7 +25,7 @@ int isStrong(int x) {
     int fac_sum = 0;
 
     if (!x)
-        return FALSE;
+        return false;
 
     while (tmp_res > 0)
     {
@@ -32,7 +33,7 @@ int isStrong(int x) {
         tmp_res /= 10;
     }
 
-    return ((fac_sum == x) ? TRUE:FALSE);
+    return ((fac_sum == x) ? true:false);
 }
 
 long factorial(int x) {
