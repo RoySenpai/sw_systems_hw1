@@ -4,7 +4,6 @@
 int main() {
     int a, b, i;
 
-    printf("Please enter two positive integers:\n");
     scanf("%d%d",&a,&b);
 
     printf("The Armstrong numbers are:");
