@@ -13,17 +13,17 @@ int main() {
             printf(" %d", i);
     }
 
-    printf("\nThe Prime numbers are:");
-    for (i = a; i <= b; ++i)
-    {
-        if (isPrime(i))
-            printf(" %d", i);
-    }
-
     printf("\nThe Palindromes are:");
     for (i = a; i <= b; ++i)
     {
         if (isPalindrome(i))
+            printf(" %d", i);
+    }
+
+    printf("\nThe Prime numbers are:");
+    for (i = a; i <= b; ++i)
+    {
+        if (isPrime(i))
             printf(" %d", i);
     }
 
