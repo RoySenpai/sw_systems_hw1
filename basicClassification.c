@@ -8,7 +8,9 @@ int isPrime(int x) {
     int pos;
 
     // 0 & 1 aren't primes!
-    if (x == 0 || x == 1)
+    // But for some reason we now consider 1 as a prime.
+    // :(
+    if (!x)
         return false;
 
     for (pos = 2; pos <= sqrt(x); ++pos)
