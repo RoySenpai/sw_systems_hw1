@@ -10,9 +10,11 @@ FP = -fPIC
 MATHLIB = -lm
 
 # File names
-MAIN = main.o
+MAIN = main.c
 HEADER = NumClass.h
-LIBB = basicClassification.o
+LIBB = basicClassification.c
+LIBLOOP = advancedClassificationLoop.c
+LIBREC = advancedClassificationRecursion.c
 LIBLS = libclassloops.a
 LIBRS = libclassrec.a
 LIBLD = libclassloops.so
@@ -36,43 +38,43 @@ loopd: $(LIBLD)
 # Build main programs
 
 # The main program with static libary of recursive implametation
-mains: $(MAIN) $(LIBRS)
+mains: $(MAIN:.c=.o) $(LIBRS)
 	$(CC) $(CFLAGS) $(MAIN) ./$(LIBRS) $(MATHLIB) -o $@
 
 # The main program with dynamic libary of loops implametation
-maindloop: $(MAIN) $(LIBLD)
+maindloop: $(MAIN:.c=.o) $(LIBLD)
 	$(CC) $(CFLAGS) $(MAIN) ./$(LIBLD) $(MATHLIB) -o $@
 
 # The main program with dynamic libary of recursive implametation
-maindrec: $(MAIN) $(LIBRD)
+maindrec: $(MAIN:.c=.o) $(LIBRD)
 	$(CC) $(CFLAGS) $(MAIN) ./$(LIBRD) $(MATHLIB) -o $@
 
 # Compile the main program to an object file
-$(MAIN): main.c $(HEADER)
+$(MAIN:.c=.o): $(MAIN) $(HEADER)
 	$(CC) $(CFLAGS) -c $^
 
 # Building all necessary libraries
-$(LIBRS): advancedClassificationRecursion.o $(LIBB)
+$(LIBRS): $(LIBREC:.c=.o) $(LIBB)
 	$(CC) $(LFLAGS) $(CFLAGS) $^ -o $@
 
-$(LIBLD): advancedClassificationLoop.o $(LIBB)
+$(LIBLD): $(LIBLOOP:.c=.o) $(LIBB:.c=.o)
 	$(CC) $(LFLAGS) $(CFLAGS) $^ -o $@
 
-$(LIBLS): advancedClassificationLoop.o $(LIBB)
+$(LIBLS): $(LIBLOOP:.c=.o) $(LIBB:.c=.o)
 	$(AR) $(SFLAGS) $@ $^
 
-$(LIBRD): advancedClassificationRecursion.o $(LIBB)
+$(LIBRD): $(LIBREC:.c=.o) $(LIBB:.c=.o)
 	$(AR) $(SFLAGS) $@ $^
 
-advancedClassificationLoop.o: advancedClassificationLoop.c $(HEADER)
+$(O_LIBLOOP:.c=.o): $(O_LIBLOOP) $(HEADER)
 	$(CC) $(CFLAGS) -c $^ $(FP)
 
-advancedClassificationRecursion.o: advancedClassificationRecursion.c $(HEADER)
+$(O_LIBREC:.c=.o): $(O_LIBREC) $(HEADER)
 	$(CC) $(CFLAGS) -c $^ $(FP)
 
-$(LIBB): basicClassification.c $(HEADER)
-	$(CC) $(CFLAGS) -c $^
+$(LIBB:.c=.o): $(LIBB) $(HEADER)
+	$(CC) $(CFLAGS) -c $^ $(FP)
 
 # Clean command to cleanup all the compiled files (*.o, *.a, *.so, mains, maindloop and maindrec)
 clean:
-	rm -rf mains maindloop maindrec *.o *.a *.so *.gch
+	rm -f mains maindloop maindrec *.o *.a *.so *.gch
