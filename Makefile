@@ -54,7 +54,7 @@ $(MAIN:.c=.o): $(MAIN) $(HEADER)
 	$(CC) $(CFLAGS) -c $^
 
 # Building all necessary libraries
-$(LIBRS): $(LIBREC:.c=.o) $(LIBB)
+$(LIBRD): $(LIBREC:.c=.o) $(LIBB:.c=.o)
 	$(CC) $(LFLAGS) $(CFLAGS) $^ -o $@
 
 $(LIBLD): $(LIBLOOP:.c=.o) $(LIBB:.c=.o)
@@ -63,13 +63,13 @@ $(LIBLD): $(LIBLOOP:.c=.o) $(LIBB:.c=.o)
 $(LIBLS): $(LIBLOOP:.c=.o) $(LIBB:.c=.o)
 	$(AR) $(SFLAGS) $@ $^
 
-$(LIBRD): $(LIBREC:.c=.o) $(LIBB:.c=.o)
+$(LIBRS): $(LIBREC:.c=.o) $(LIBB:.c=.o)
 	$(AR) $(SFLAGS) $@ $^
 
-$(O_LIBLOOP:.c=.o): $(O_LIBLOOP) $(HEADER)
+$(LIBLOOP:.c=.o): $(LIBLOOP) $(HEADER)
 	$(CC) $(CFLAGS) -c $^ $(FP)
 
-$(O_LIBREC:.c=.o): $(O_LIBREC) $(HEADER)
+$(LIBREC:.c=.o): $(LIBREC) $(HEADER)
 	$(CC) $(CFLAGS) -c $^ $(FP)
 
 $(LIBB:.c=.o): $(LIBB) $(HEADER)
