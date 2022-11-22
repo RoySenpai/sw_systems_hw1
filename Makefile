@@ -39,15 +39,15 @@ loopd: $(LIBLD)
 
 # The main program with static libary of recursive implametation
 mains: $(MAIN:.c=.o) $(LIBRS)
-	$(CC) $(CFLAGS) $(MAIN) ./$(LIBRS) $(MATHLIB) -o $@
+	$(CC) $(CFLAGS) $< ./$(LIBRS) $(MATHLIB) -o $@
 
 # The main program with dynamic libary of loops implametation
 maindloop: $(MAIN:.c=.o) $(LIBLD)
-	$(CC) $(CFLAGS) $(MAIN) ./$(LIBLD) $(MATHLIB) -o $@
+	$(CC) $(CFLAGS) $< ./$(LIBLD) $(MATHLIB) -o $@
 
 # The main program with dynamic libary of recursive implametation
 maindrec: $(MAIN:.c=.o) $(LIBRD)
-	$(CC) $(CFLAGS) $(MAIN) ./$(LIBRD) $(MATHLIB) -o $@
+	$(CC) $(CFLAGS) $< ./$(LIBRD) $(MATHLIB) -o $@
 
 # Compile the main program to an object file
 $(MAIN:.c=.o): $(MAIN) $(HEADER)
@@ -75,6 +75,6 @@ $(LIBREC:.c=.o): $(LIBREC) $(HEADER)
 $(LIBB:.c=.o): $(LIBB) $(HEADER)
 	$(CC) $(CFLAGS) -c $^ $(FP)
 
-# Clean command to cleanup all the compiled files (*.o, *.a, *.so, mains, maindloop and maindrec)
+# Clean command to cleanup all the compiled files (*.o, *.a, *.so, *.gch, mains, maindloop and maindrec)
 clean:
 	rm -f mains maindloop maindrec *.o *.a *.so *.gch
